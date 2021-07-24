@@ -1,0 +1,4 @@
+---
+# vars file for myapache
+
+webserver_name : "httpd"

@@ -1,0 +1,12 @@
+- hosts: localhost
+  vars_files:
+         - cred.yml
+  roles: 
+    - role: "aws"
+- hosts: ec2_haproxy 
+  roles:
+    - role: "loadbalancer"
+
+- hosts: ec2_webserver
+  roles:
+    - role: "myapache"

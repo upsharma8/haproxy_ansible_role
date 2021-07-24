@@ -1,0 +1,23 @@
+
+  - name: Install haproxy
+    package:
+     name:  "{{haproxy}}"
+     state: present
+
+  - name:  Configuraton Reverse Proxy
+    template:
+     src: haproxy.cfg
+     dest: /etc/haproxy/haproxy.cfg
+    notify: "restart services" 
+  - name: "Start services"
+    service: 
+       name: "{{haproxy}}"
+       state: started    
+
+
+
+
+
+
+
+

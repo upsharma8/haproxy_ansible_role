@@ -1,0 +1,48 @@
+
+
+  - name: Creating Directory
+    file:
+       path: /dvd
+       state: directory
+  - name: Mounting 
+    mount:
+       src: /dev/sr0
+       path: /dvd
+       state: mounted
+       fstype: iso9660
+    ignore_errors: True
+  - name: Creating yum_repo
+    yum_repository:
+       baseurl: /dvd/AppStream
+       name: dvd1
+       description: myyyum1
+       gpgcheck: no   
+    ignore_errors: True
+  
+  - yum_repository:
+       baseurl: /dvd/BaseOS
+       name: dvd2
+       description: myyyum2
+       gpgcheck: no 
+    ignore_errors: True
+  - name: Creating a package
+    package: 
+       name: "{{webserver_name}}" 
+       state: present
+  - name: Copy the html file
+    copy: 
+       src: "aaa.html"  
+       dest: "/var/www/html/web1.html"
+    notify: "restart services"
+  
+  - name: Start the service
+    service: 
+        name: "{{webserver_name}}"
+        state: started
+  - name: Firewall
+    firewalld:
+       port: 8080/tcp
+       state: enabled
+       permanent: yes
+       immediate: yes 
+    ignore_errors: True
